@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OutreachIQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center;">
+      <span class="nav-brand">OutreachIQ</span>
+      <span class="nav-sep">|</span>
+      <span class="nav-sub">Lead Pipeline</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link active" data-screen="search" onclick="showTab('search')">Search</button>
+      <button class="nav-link" data-screen="pipeline" onclick="showTab('pipeline')">Pipeline</button>
+      <button class="nav-link" data-screen="stats" onclick="showTab('stats')">Stats</button>
+    </div>
+  </div>
+</nav>
+<div class="gold-line"></div>
+
+<div class="main">
+
+  <!-- ===== TAB 1: SEARCH ===== -->
+  <div id="s-search" class="screen active fade">
+    <div style="margin-bottom:28px;">
+      <div class="brow">Prospecting</div>
+      <h1 class="ptitle">Find Your Next Client</h1>
+      <p class="psub">Client Fit Search for your service priorities.</p>
+    </div>
+
+    <div class="prospecting-panel">
+      <div>
+        <div class="lbl">Service Priority</div>
+        <div class="chips compact" id="service-chips"></div>
+      </div>
+      <div>
+        <div class="lbl">Search Lane</div>
+        <div class="chips compact" id="mode-chips"></div>
+      </div>
+      <div>
+        <div class="lbl">Outreach Mix</div>
+        <div class="chips compact" id="mix-chips"></div>
+      </div>
+      <div>
+        <div class="lbl">Market Preset</div>
+        <div class="chips compact" id="market-chips"></div>
+      </div>
+      <label class="check-row">
+        <input type="checkbox" id="exclude-motion" checked>
+        <span>Exclude motion graphics</span>
+      </label>
+    </div>
+
+    <div id="monthly-fit-summary" class="fit-summary" style="display:none;"></div>
+
+    <div class="search-grid">
+      <div>
+        <div class="lbl">Recommended Searches</div>
+        <div id="recommended-searches" class="recommendation-list"></div>
+
+        <div class="lbl">Industry Niche</div>
+        <div class="chips" id="industry-chips"></div>
+        <div style="margin-top:12px;">
+          <div class="lbl">Custom Query (optional)</div>
+          <input type="text" id="custom-query" placeholder="e.g. luxury interior design studio">
+        </div>
+      </div>
+      <div>
+        <div class="lbl">Target Location</div>
+        <input type="text" id="search-location" placeholder="e.g. Dubai, UAE">
+        <div style="margin-top:16px;">
+          <div class="lbl">Number of Results</div>
+          <div class="chips" id="limit-chips">
+            <button class="chip" data-val="5">5</button>
+            <button class="chip" data-val="10">10</button>
+            <button class="chip on" data-val="20">20</button>
+            <button class="chip" data-val="40">40</button>
+            <button class="chip" data-val="60">60</button>
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <div class="lbl">Service Presets</div>
+          <div id="service-presets" class="preset-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="search-err" class="err" style="display:none;margin-top:16px;"></div>
+    <div id="search-success" class="success-box" style="display:none;margin-top:16px;"></div>
+
+    <div style="margin-top:24px;display:flex;align-items:center;gap:16px;">
+      <button class="btn gold" id="search-btn" onclick="doSearch()">Search Google Maps</button>
+      <span id="search-status" style="font-size:13px;color:#666;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"></span>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: PIPELINE ===== -->
+  <div id="s-pipeline" class="screen fade">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;">
+      <div>
+        <div class="brow">Pipeline</div>
+        <h1 class="ptitle">Your Prospects</h1>
+      </div>
+      <button class="btn outline sm" onclick="showTab('search')">+ New Search</button>
+    </div>
+
+    <!-- Pipeline stats bar -->
+    <div id="pipeline-stats" class="pipeline-stats"></div>
+
+    <!-- Priority filter tabs -->
+    <div class="filter-tabs" id="filter-tabs">
+      <button class="ftab active" data-filter="all" onclick="setFilter('all', this)">All</button>
+      <button class="ftab favorite" data-filter="favorites" onclick="setFilter('favorites', this)">Favorites</button>
+      <button class="ftab hot" data-filter="hot" onclick="setFilter('hot', this)">Hot</button>
+      <button class="ftab warm" data-filter="warm" onclick="setFilter('warm', this)">Warm</button>
+      <button class="ftab cold" data-filter="cold" onclick="setFilter('cold', this)">Cold</button>
+      <button class="ftab status-drafted" data-filter="drafted" onclick="setFilter('drafted', this)">Drafted</button>
+      <button class="ftab review" data-filter="missing_email" onclick="setFilter('missing_email', this)">No Email</button>
+      <button class="ftab review" data-filter="tone_review" onclick="setFilter('tone_review', this)">Needs Review</button>
+      <button class="ftab status-sent" data-filter="sent" onclick="setFilter('sent', this)">Sent</button>
+      <button class="ftab status-bounced" data-filter="bounced" onclick="setFilter('bounced', this)">Bounced</button>
+      <button class="ftab status-replied" data-filter="replied" onclick="setFilter('replied', this)">Replied</button>
+      <button class="ftab status-meeting" data-filter="meeting" onclick="setFilter('meeting', this)">Meeting</button>
+      <button class="ftab status-converted" data-filter="converted" onclick="setFilter('converted', this)">Converted</button>
+    </div>
+
+    <!-- Filters row -->
+    <div class="filters" style="margin-top:12px;">
+      <select id="f-industry" onchange="currentPage=1;loadLeads()">
+        <option value="">All Industries</option>
+      </select>
+      <input type="search" id="f-search" placeholder="Search by name or city..." oninput="currentPage=1;loadLeads()">
+      <select id="f-sort" onchange="currentPage=1;loadLeads()">
+        <option value="found_at">Newest First</option>
+        <option value="favorited_at">Favorite Order</option>
+        <option value="score">Highest Score</option>
+        <option value="name">Name A-Z</option>
+        <option value="rating">Best Rating</option>
+      </select>
+    </div>
+
+    <!-- Next Step Guide -->
+    <div id="next-step-guide" style="margin-bottom:12px;"></div>
+    <div id="favorites-summary"></div>
+    <div id="review-queue-summary"></div>
+
+    <!-- Table -->
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="leads-table">
+        <colgroup>
+          <col style="width:54px;">
+          <col style="width:80px;">
+          <col style="width:200px;">
+          <col style="width:150px;">
+          <col style="width:110px;">
+          <col style="width:100px;">
+          <col style="width:160px;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Score</th>
+            <th>Priority</th>
+            <th>Company</th>
+            <th>Industry</th>
+            <th>City</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="leads-tbody"></tbody>
+      </table>
+      <div id="pagination" style="padding:12px 16px;"></div>
+      <div id="leads-empty" style="display:none;text-align:center;padding:48px;color:#999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+        No prospects here. Run a search to get started.
+      </div>
+    </div>
+
+    <!-- Bulk actions bar -->
+    <div class="bulk-bar">
+      <button class="btn navy sm" onclick="doScoreExport()">Export for Scoring</button>
+      <button class="btn gold sm" onclick="doScoreImport()">Import Scores</button>
+      <span class="bulk-sep"></span>
+      <button class="btn navy sm" onclick="doEmailExport(false)">Export for Email Writing</button>
+      <button class="btn ghost sm" onclick="doEmailExport(true)">Include Cold Leads</button>
+      <button class="btn gold sm" onclick="doEmailImport()">Import Emails</button>
+      <button class="btn navy sm" onclick="doFindMissingEmails()" title="Re-enrich drafted leads with no contact email and auto-fill a same-domain address so they become sendable">Find Missing Emails</button>
+      <span class="bulk-sep"></span>
+      <button class="btn navy sm" onclick="doAiAddonExport()" title="Export hot/warm unsent leads so Claude can write a short optional AI add-on P.S.">Export AI Add-ons</button>
+      <button class="btn gold sm" onclick="doAiAddonImport()" title="Read data/ai_addon.json and attach the AI add-on P.S. to leads (toggled off by default)">Import AI Add-ons</button>
+      <button class="btn green sm" onclick="doAiAddonBulk(true)" title="Turn the AI add-on P.S. ON for every hot/warm lead that has one">Enable Add-on (all hot/warm)</button>
+      <button class="btn ghost sm" onclick="doAiAddonBulk(false)" title="Turn the AI add-on P.S. OFF for all leads">Disable Add-on (all)</button>
+      <span class="bulk-sep"></span>
+      <button class="btn outline sm" onclick="doCsvExport()">Export CSV</button>
+      <button class="btn outline sm" onclick="doFullCsvExport()">Export Full Data</button>
+      <button class="btn ghost sm" onclick="openAddModal()">+ Add Manually</button>
+    </div>
+
+    <!-- Button legend -->
+    <div style="margin-top:10px;background:#FAFAF8;border:1px solid #EDE8E0;border-radius:4px;overflow:hidden;font-family:-apple-system,sans-serif;">
+
+      <!-- Workflow order -->
+      <div style="padding:10px 14px 8px;border-bottom:1px solid #EDE8E0;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#AAA;margin-bottom:7px;">Full workflow &mdash; in order</div>
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-size:11px;color:#666;line-height:1.8;">
+          <span style="background:#1E3A5F;color:#fff;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">1. Search</span>
+          <span style="color:#CCC;">&#8250;</span>
+          <span style="background:#1E3A5F;color:#fff;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">2. Export for Scoring</span>
+          <span style="color:#CCC;">&#8250;</span>
+          <span style="background:#2D2D2D;color:#E8D9A0;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">3. Ask Claude: "score my prospects"</span>
+          <span style="color:#CCC;">&#8250;</span>
+          <span style="background:#C4A84A;color:#fff;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">4. Import Scores</span>
+          <span style="color:#CCC;">&#8250;</span>
+          <span style="background:#1E3A5F;color:#fff;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">5. Export for Email Writing</span>
+          <span style="color:#CCC;">&#8250;</span>
+          <span style="background:#2D2D2D;color:#E8D9A0;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">6. Ask Claude: "write emails"</span>
+          <span style="color:#CCC;">&#8250;</span>
+          <span style="background:#C4A84A;color:#fff;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">7. Import Emails</span>
+          <span style="color:#CCC;">&#8250;</span>
+          <span style="background:#065F46;color:#fff;padding:2px 8px;border-radius:3px;font-size:10px;white-space:nowrap;">8. Send &amp; Mark Sent</span>
+        </div>
+      </div>
+
+      <!-- Button descriptions -->
+      <div style="padding:8px 14px 10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 24px;">
+        <div style="font-size:11px;color:#888;line-height:1.6;"><strong style="color:#555;">Export for Scoring</strong> &mdash; saves unscored leads to <code style="font-size:10px;background:#F0EBE2;padding:1px 4px;border-radius:2px;">data/to_score.json</code> for Claude to read</div>
+        <div style="font-size:11px;color:#888;line-height:1.6;"><strong style="color:#555;">Import Scores</strong> &mdash; reads <code style="font-size:10px;background:#F0EBE2;padding:1px 4px;border-radius:2px;">data/scored.json</code> written by Claude and updates priorities</div>
+        <div style="font-size:11px;color:#888;line-height:1.6;"><strong style="color:#555;">Export for Email Writing</strong> &mdash; saves hot/warm/cold leads without a draft to <code style="font-size:10px;background:#F0EBE2;padding:1px 4px;border-radius:2px;">data/to_write.json</code></div>
+        <div style="font-size:11px;color:#888;line-height:1.6;"><strong style="color:#555;">Import Emails</strong> &mdash; reads <code style="font-size:10px;background:#F0EBE2;padding:1px 4px;border-radius:2px;">data/written.json</code> written by Claude and fills in email drafts</div>
+        <div style="font-size:11px;color:#888;line-height:1.6;"><strong style="color:#555;">Export CSV</strong> &mdash; downloads the current filtered view as a spreadsheet</div>
+        <div style="font-size:11px;color:#888;line-height:1.6;"><strong style="color:#555;">Export Full Data</strong> &mdash; downloads every field including email drafts and LinkedIn profiles</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: STATS ===== -->
+  <div id="s-stats" class="screen fade">
+    <div style="margin-bottom:28px;">
+      <div class="brow">Analytics</div>
+      <h1 class="ptitle">Pipeline Stats</h1>
+      <p class="psub">Track your outreach funnel from search to conversion.</p>
+    </div>
+
+    <!-- Funnel -->
+    <div class="stats-funnel" id="stats-funnel"></div>
+
+    <!-- Priority breakdown -->
+    <div style="margin-top:36px;">
+      <div class="lbl" style="margin-bottom:16px;">Priority Breakdown</div>
+      <div class="priority-cards" id="priority-cards"></div>
+    </div>
+
+    <!-- Sending & safety -->
+    <div style="margin-top:36px;" id="sending-section"></div>
+
+    <!-- Variant performance -->
+    <div style="margin-top:36px;" id="variant-perf-section"></div>
+
+    <!-- API status -->
+    <div style="margin-top:36px;" id="api-status-section"></div>
+
+    <!-- Enrichment + usage -->
+    <div style="margin-top:36px;" id="enrichment-status-section"></div>
+    <div style="margin-top:36px;" id="usage-status-section"></div>
+  </div>
+
+</div><!-- .main -->
+
+<!-- ===== DETAIL PANEL ===== -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-header">
+    <div>
+      <h2 id="d-name"></h2>
+      <div style="color:#5A7A9A;font-size:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin-top:4px;" id="d-meta"></div>
+    </div>
+    <button class="detail-close" onclick="closeDetail()">&times;</button>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+
+<!-- ===== ADD LEAD MODAL ===== -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h2>Add Prospect</h2>
+    <p class="psub" style="margin-bottom:20px;">Manually add a business to your pipeline.</p>
+    <div class="fgroup"><div class="lbl">Business Name *</div><input type="text" id="m-name"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="fgroup"><div class="lbl">Industry</div>
+        <select id="m-industry"></select>
+      </div>
+      <div class="fgroup"><div class="lbl">City</div><input type="text" id="m-city"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="fgroup"><div class="lbl">Country</div><input type="text" id="m-country"></div>
+      <div class="fgroup"><div class="lbl">Phone</div><input type="text" id="m-phone"></div>
+    </div>
+    <div class="fgroup"><div class="lbl">Website</div><input type="text" id="m-website" placeholder="https://..."></div>
+    <div class="fgroup"><div class="lbl">Notes</div><textarea id="m-notes" rows="3"></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button class="btn gold" onclick="doAddLead()">Add Prospect</button>
+      <button class="btn outline" onclick="closeAddModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

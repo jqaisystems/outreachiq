@@ -1,0 +1,22 @@
+# Secrets - never commit
+.env
+token.json
+client_secret.json
+
+# Personal data - never commit
+data/
+emails/
+email-log.md
+memory.md
+logs/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Local tooling
+.claude/settings.local.json
