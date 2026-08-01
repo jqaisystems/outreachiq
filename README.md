@@ -35,6 +35,16 @@ Follow-ups, reply/bounce detection, outcome tracking
 
 Everything runs locally: a single Flask server, flat JSON files as the database, no external SaaS beyond the APIs you choose to plug in.
 
+## Why it works this way
+
+OutreachIQ treats outreach as a controlled workflow rather than a pile of prospects. The system does the repetitive work — search, enrichment, scoring, drafting, and tone-checking — while a human review gate decides what actually goes out. **The system drafts and checks. You decide what gets sent.** The useful pattern is not blind autonomy: AI handles the repetitive layer, and the human keeps the judgement layer before anything sends.
+
+![From prospect list to review queue](docs/media/outreach-iq-prospect-to-review.jpg)
+
+On the maker's own live pipeline, OutreachIQ has processed **1,600+ leads** and sent **320 emails** through the review gate — live totals, not projections.
+
+📖 **[Read the full build story →](https://www.ai.joaoqueiros.com/systems/outreach-iq)**
+
 ## Features
 
 - **Lead search** via Google Places with industry presets, service-led search presets, market presets, and custom queries
@@ -148,3 +158,5 @@ OutreachIQ is designed for small-scale, human-reviewed B2B outreach: every email
 ## Credits
 
 Built by João Queirós ([https://www.ai.joaoqueiros.com](https://www.ai.joaoqueiros.com)). Released under the MIT license, see [LICENSE](LICENSE).
+
+Read the full build story: [OutreachIQ case study](https://www.ai.joaoqueiros.com/systems/outreach-iq).
