@@ -1,6 +1,17 @@
 # OutreachIQ
 
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)
+![Self-hosted](https://img.shields.io/badge/Self--hosted-runs%20locally-6b4de6.svg)
+[![Live site](https://img.shields.io/badge/Live%20site-outreachiq.joaoqueiros.com-0aa06b.svg)](https://www.outreachiq.joaoqueiros.com/)
+
+**🌐 [Live site](https://www.outreachiq.joaoqueiros.com/)  ·  ▶ [Watch the 72s trailer](https://www.outreachiq.joaoqueiros.com/#top)  ·  🕹 [Try the interactive demo](https://www.outreachiq.joaoqueiros.com/demo/)**
+
 A self-hosted lead generation and cold outreach QA dashboard. Find businesses, score them, draft short personalised emails, review every word, and send at a deliberately slow pace.
+
+![OutreachIQ — the full pipeline in about 72 seconds](docs/media/outreach-iq-demo.gif)
+
+*The full pipeline, start to finish. The complete captioned trailer and five short tutorials play on the [live site](https://www.outreachiq.joaoqueiros.com/).*
 
 ```
 Google Places search
@@ -40,6 +51,20 @@ Everything runs locally: a single Flask server, flat JSON files as the database,
 - **Pipeline tracking**: full status lifecycle from unscored to converted, CSV exports, per-email markdown archive
 - **LinkedIn support**: connection notes and first messages per decision-maker, with engagement suggestions
 
+## Screenshots
+
+**The pipeline board — every lead, scored and staged**
+![Pipeline board with scored, hot leads](docs/media/ui-pipeline-hot.png)
+
+**Three email variants per lead, side by side**
+![Lead detail with three email variants](docs/media/ui-detail-variants.png)
+
+**Local tone audit flags weak lines before you ever send**
+![Tone audit panel flagging draft issues](docs/media/ui-audit-panel.png)
+
+**Pipeline totals at a glance**
+![Pipeline stats and totals](docs/media/ui-stats.png)
+
 ## Requirements
 
 - Python 3.11+
@@ -50,8 +75,8 @@ Everything runs locally: a single Flask server, flat JSON files as the database,
 ## Quick start
 
 ```bash
-git clone <this repo>
-cd OutreachIQ
+git clone https://github.com/jqaisystems/outreachiq.git
+cd outreachiq
 pip install -r requirements.txt
 cp .env.example .env    # add your keys
 python server.py
