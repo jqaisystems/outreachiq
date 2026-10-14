@@ -41,7 +41,7 @@ OutreachIQ treats outreach as a controlled workflow rather than a pile of prospe
 
 ![From prospect list to review queue](docs/media/outreach-iq-prospect-to-review.jpg)
 
-On the maker's own live pipeline, OutreachIQ has processed **1,600+ leads** and sent **320 emails** through the review gate — live totals, not projections.
+The public demo shows the full pipeline using sample data. For the documented workflow and case-study evidence, see the linked build story.
 
 📖 **[Read the full build story →](https://www.ai.joaoqueiros.com/systems/outreach-iq)**
 
