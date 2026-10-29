@@ -9,9 +9,53 @@
 
 A self-hosted lead generation and cold outreach QA dashboard. Find businesses, score them, draft short personalised emails, review every word, and send at a deliberately slow pace.
 
-![OutreachIQ — the full pipeline in about 72 seconds](docs/media/outreach-iq-demo.gif)
+<picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/media/outreach-iq-prospect-to-review.jpg"><img src="docs/media/outreach-iq-demo.gif" alt="OutreachIQ pipeline overview film"></picture>
+
+[Static workflow preview](docs/media/outreach-iq-prospect-to-review.jpg)
 
 *The full pipeline, start to finish. The complete captioned trailer and five short tutorials play on the [live site](https://www.outreachiq.joaoqueiros.com/).*
+
+[Requirements](#requirements) · [Quick start](#quick-start) · [Documentation](#documentation) · [Support](#support)
+
+Everything runs locally: a single Flask server, flat JSON files as the database, no external SaaS beyond the APIs you choose to plug in.
+
+## Requirements
+
+- Python 3.11+
+- A Google Places API key (required, for lead search)
+- Firecrawl and Apollo API keys (optional, for enrichment)
+- Gmail OAuth credentials (optional, only if you want to send from the dashboard)
+
+## Quick start
+
+```bash
+git clone https://github.com/jqaisystems/outreachiq.git
+cd outreachiq
+pip install -r requirements.txt
+cp .env.example .env    # add your keys
+python server.py
+```
+
+Open http://localhost:5001. The step-by-step usage walkthrough is in [docs/guide.md](docs/guide.md).
+
+## Documentation
+
+[User guide](docs/guide.md) · [AI handoff and rubric](OPERATOR-GUIDE.md) · [Build story](https://www.ai.joaoqueiros.com/systems/outreach-iq)
+
+## Support
+
+Open a [GitHub issue](https://github.com/jqaisystems/outreachiq/issues/new/choose) with your Python version, setup step and a redacted error. Use sample leads when sharing a reproduction. Never attach contact exports, API keys, Gmail credentials or message histories.
+
+## Why it works this way
+
+OutreachIQ treats outreach as a controlled workflow rather than a pile of prospects. The system does the repetitive work: search, enrichment, scoring, drafting, and tone-checking: while a human review gate decides what actually goes out. **The system drafts and checks. You decide what gets sent.** The useful pattern is not blind autonomy: AI handles the repetitive layer, and the human keeps the judgement layer before anything sends.
+
+![From prospect list to review queue](docs/media/outreach-iq-prospect-to-review.jpg)
+
+The public demo shows the full pipeline using sample data. For the documented workflow and case-study evidence, see the linked build story.
+
+📖 **[Read the full build story →](https://www.ai.joaoqueiros.com/systems/outreach-iq)**
+
 
 ```
 Google Places search
@@ -33,18 +77,6 @@ Throttled Gmail API sending
 Follow-ups, reply/bounce detection, outcome tracking
 ```
 
-Everything runs locally: a single Flask server, flat JSON files as the database, no external SaaS beyond the APIs you choose to plug in.
-
-## Why it works this way
-
-OutreachIQ treats outreach as a controlled workflow rather than a pile of prospects. The system does the repetitive work — search, enrichment, scoring, drafting, and tone-checking — while a human review gate decides what actually goes out. **The system drafts and checks. You decide what gets sent.** The useful pattern is not blind autonomy: AI handles the repetitive layer, and the human keeps the judgement layer before anything sends.
-
-![From prospect list to review queue](docs/media/outreach-iq-prospect-to-review.jpg)
-
-The public demo shows the full pipeline using sample data. For the documented workflow and case-study evidence, see the linked build story.
-
-📖 **[Read the full build story →](https://www.ai.joaoqueiros.com/systems/outreach-iq)**
-
 ## Features
 
 - **Lead search** via Google Places with industry presets, service-led search presets, market presets, and custom queries
@@ -61,9 +93,12 @@ The public demo shows the full pipeline using sample data. For the documented wo
 - **Pipeline tracking**: full status lifecycle from unscored to converted, CSV exports, per-email markdown archive
 - **LinkedIn support**: connection notes and first messages per decision-maker, with engagement suggestions
 
+<details>
+<summary>Product screenshots</summary>
+
 ## Screenshots
 
-**The pipeline board — every lead, scored and staged**
+**The pipeline board: every lead, scored and staged**
 ![Pipeline board with scored, hot leads](docs/media/ui-pipeline-hot.png)
 
 **Three email variants per lead, side by side**
@@ -75,32 +110,16 @@ The public demo shows the full pipeline using sample data. For the documented wo
 **Pipeline totals at a glance**
 ![Pipeline stats and totals](docs/media/ui-stats.png)
 
-## Requirements
 
-- Python 3.11+
-- A Google Places API key (required, for lead search)
-- Firecrawl and Apollo API keys (optional, for enrichment)
-- Gmail OAuth credentials (optional, only if you want to send from the dashboard)
-
-## Quick start
-
-```bash
-git clone https://github.com/jqaisystems/outreachiq.git
-cd outreachiq
-pip install -r requirements.txt
-cp .env.example .env    # add your keys
-python server.py
-```
-
-Open http://localhost:5001. The step-by-step usage walkthrough is in [docs/guide.md](docs/guide.md).
+</details>
 
 ## API keys
 
-| Provider | Used for | Free tier notes |
+| Provider | Used for | Access and billing |
 |---|---|---|
-| Google Places | Lead search (required) | $200/month free credit covers thousands of searches. Enable "Places API (New)" at console.cloud.google.com |
-| Firecrawl | Website summaries, brand signals, contact page emails (optional) | Free tier available |
-| Apollo | Company enrichment: size, founded year, revenue, keywords, LinkedIn (optional) | Optional org enrichment, free tier available |
+| Google Places | Lead search (required) | Enable Places API (New). Google uses per-SKU free usage thresholds; check [current pricing](https://developers.google.com/maps/billing-and-pricing/march-2025) and set a budget. |
+| Firecrawl | Website summaries, brand signals, contact page emails (optional) | Check the provider's current plans and limits |
+| Apollo | Company enrichment: size, founded year, revenue, keywords, LinkedIn (optional) | Optional organisation enrichment; check current plans and limits |
 
 The dashboard works without the optional keys. Scoring and drafting just have less context to work with.
 
